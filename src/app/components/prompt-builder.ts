@@ -47,6 +47,7 @@ export class PromptBuilder implements OnChanges, OnDestroy {
   private readonly library = inject(LibraryService);
 
   private readonly closeBtn = viewChild<ElementRef<HTMLButtonElement>>('closeBtn');
+  private readonly panel = viewChild<ElementRef<HTMLElement>>('panel');
 
   private valueSub?: { unsubscribe: () => void };
   private closeTimer?: ReturnType<typeof setTimeout>;
@@ -71,8 +72,36 @@ export class PromptBuilder implements OnChanges, OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   protected onKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Escape' && this.open()) {
+    if (!this.open()) return;
+    if (event.key === 'Escape') {
       this.close();
+      return;
+    }
+    if (event.key === 'Tab') {
+      this.trapFocus(event);
+    }
+  }
+
+  private trapFocus(event: KeyboardEvent): void {
+    const root = this.panel()?.nativeElement;
+    if (!root) return;
+    const focusables = Array.from(
+      root.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
+    if (focusables.length === 0) return;
+
+    const active = document.activeElement as HTMLElement | null;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+
+    if (event.shiftKey && (active === first || active === null)) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || active === null)) {
+      event.preventDefault();
+      first.focus();
     }
   }
 

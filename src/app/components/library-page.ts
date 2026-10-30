@@ -79,7 +79,7 @@ export class LibraryPage {
   protected readonly heading = computed(() =>
     this.mode() === 'favorites'
       ? 'พรอมต์ที่คุณชอบ เรียกใช้ได้ทันที'
-      : 'หาพรอมต์สำหรับงานสิ่งถัดไปของคุณ'
+      : 'หาพรอมต์ที่ใช่สำหรับงานของคุณ'
   );
 
   protected readonly subline = computed(() =>
