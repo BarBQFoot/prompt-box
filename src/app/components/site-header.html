@@ -1,0 +1,81 @@
+<header class="sticky top-0 z-30 border-b border-neutral-200/80 bg-white/85 backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
+    <button
+      type="button"
+      class="flex cursor-pointer items-center gap-2.5 rounded-xl py-1"
+      (click)="selectView('library')"
+      aria-label="ไปยังหน้าคลังพรอมต์"
+    >
+      <span
+        class="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-md shadow-brand-600/25"
+      >
+        <app-icon name="sparkle" [size]="19" />
+      </span>
+      <span class="text-lg font-bold tracking-tight text-neutral-900">PromptBox</span>
+    </button>
+
+    <nav class="ml-3 hidden items-center gap-1 md:flex" aria-label="เมนูหลัก">
+      <button
+        type="button"
+        class="nav-link"
+        [class.nav-link-active]="view() === 'library'"
+        (click)="selectView('library')"
+      >
+        คลังพรอมต์
+      </button>
+      <button
+        type="button"
+        class="nav-link"
+        [class.nav-link-active]="view() === 'favorites'"
+        (click)="selectView('favorites')"
+      >
+        รายการโปรด
+        @if (favoritesCount() > 0) {
+          <span class="badge">{{ favoritesCount() }}</span>
+        }
+      </button>
+      <button type="button" class="nav-link" (click)="myPrompts()">พรอมต์ของฉัน</button>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-1.5">
+      <button type="button" class="btn-primary" (click)="createPrompt()">
+        <app-icon name="pencil" [size]="16" />
+        <span>สร้างพรอมต์</span>
+      </button>
+      <button
+        type="button"
+        class="btn-icon md:hidden"
+        (click)="menuOpen.set(!menuOpen())"
+        [attr.aria-expanded]="menuOpen()"
+        [attr.aria-label]="menuOpen() ? 'ปิดเมนู' : 'เปิดเมนู'"
+      >
+        <app-icon [name]="menuOpen() ? 'close' : 'menu'" [size]="22" />
+      </button>
+    </div>
+  </div>
+
+  @if (menuOpen()) {
+    <nav class="border-t border-neutral-200 bg-white px-4 pb-3.5 pt-2 md:hidden" aria-label="เมนูหลักพกพา">
+      <button
+        type="button"
+        class="mobile-nav"
+        [class.nav-link-active]="view() === 'library'"
+        (click)="selectView('library')"
+      >
+        คลังพรอมต์
+      </button>
+      <button
+        type="button"
+        class="mobile-nav"
+        [class.nav-link-active]="view() === 'favorites'"
+        (click)="selectView('favorites')"
+      >
+        รายการโปรด
+        @if (favoritesCount() > 0) {
+          <span class="badge">{{ favoritesCount() }}</span>
+        }
+      </button>
+      <button type="button" class="mobile-nav" (click)="myPrompts()">พรอมต์ของฉัน</button>
+    </nav>
+  }
+</header>

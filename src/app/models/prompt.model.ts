@@ -1,3 +1,5 @@
+import type { IconName } from './icon-names';
+
 export type PromptCategoryId =
   | 'writing'
   | 'coding'
@@ -12,7 +14,7 @@ export interface PromptVariable {
   key: string;
   label: string;
   type: VariableFieldType;
-  placeholder: string;
+  placeholder?: string;
   helper?: string;
   required?: boolean;
   defaultValue?: string;
@@ -47,7 +49,7 @@ export interface Prompt {
 export interface CategoryDef {
   id: PromptCategoryId | 'all';
   label: string;
-  icon: string;
+  icon: IconName;
 }
 
 export type SortKey = 'recommended' | 'name' | 'recent';
