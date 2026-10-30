@@ -6,7 +6,10 @@ export interface Toast {
   id: number;
   message: string;
   type: ToastType;
+  closing?: boolean;
 }
+
+const LEAVE_MS = 190;
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
@@ -20,7 +23,15 @@ export class ToastService {
     setTimeout(() => this.dismiss(id), 3400);
   }
 
+  /** Marks the toast as leaving so it can animate out, then removes it. */
   dismiss(id: number): void {
-    this.toasts.update((list) => list.filter((t) => t.id !== id));
+    this.toasts.update((list) => {
+      const toast = list.find((t) => t.id === id);
+      if (!toast || toast.closing) return list;
+      setTimeout(() => {
+        this.toasts.update((current) => current.filter((t) => t.id !== id));
+      }, LEAVE_MS);
+      return list.map((t) => (t.id === id ? { ...t, closing: true } : t));
+    });
   }
 }

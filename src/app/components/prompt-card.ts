@@ -5,15 +5,17 @@ import { Prompt } from '../models/prompt.model';
 export interface CategoryMeta {
   label: string;
   icon: IconName;
+  tile: string;
+  text: string;
 }
 
 export const CATEGORY_META: Record<Prompt['category'], CategoryMeta> = {
-  writing: { label: 'การเขียน', icon: 'pencil' },
-  coding: { label: 'เขียนโค้ด', icon: 'code' },
-  learning: { label: 'การเรียนรู้', icon: 'school' },
-  business: { label: 'ธุรกิจ', icon: 'briefcase' },
-  marketing: { label: 'การตลาด', icon: 'megaphone' },
-  data: { label: 'วิเคราะห์ข้อมูล', icon: 'chart' },
+  writing: { label: 'การเขียน', icon: 'pencil', tile: 'bg-violet-100', text: 'text-violet-700' },
+  coding: { label: 'เขียนโค้ด', icon: 'code', tile: 'bg-indigo-100', text: 'text-indigo-700' },
+  learning: { label: 'การเรียนรู้', icon: 'school', tile: 'bg-sky-100', text: 'text-sky-700' },
+  business: { label: 'ธุรกิจ', icon: 'briefcase', tile: 'bg-amber-100', text: 'text-amber-700' },
+  marketing: { label: 'การตลาด', icon: 'megaphone', tile: 'bg-rose-100', text: 'text-rose-700' },
+  data: { label: 'วิเคราะห์ข้อมูล', icon: 'chart', tile: 'bg-emerald-100', text: 'text-emerald-700' },
 };
 
 @Component({

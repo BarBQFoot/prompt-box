@@ -1,12 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
+  HostListener,
   computed,
   effect,
   inject,
   input,
   output,
   signal,
+  viewChild,
 } from '@angular/core';
 import { Icon } from './icon';
 import { PromptCard, CATEGORY_META } from './prompt-card';
@@ -39,12 +42,31 @@ export class LibraryPage {
   protected readonly cardTick = signal(0);
 
   private readonly library = inject(LibraryService);
+  private readonly searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
   constructor() {
     effect(() => {
       this.mode();
       this.bump();
     });
+  }
+
+  /** Press "/" outside a field to jump straight into search. */
+  @HostListener('document:keydown', ['$event'])
+  protected onKeydown(event: KeyboardEvent): void {
+    if (event.key !== '/' || event.ctrlKey || event.altKey || event.metaKey) return;
+    const target = event.target as HTMLElement | null;
+    if (
+      target &&
+      (target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.tagName === 'SELECT' ||
+        target.isContentEditable)
+    ) {
+      return;
+    }
+    event.preventDefault();
+    this.searchInput()?.nativeElement.focus();
   }
 
   private bump(): void {
@@ -74,12 +96,6 @@ export class LibraryPage {
 
   protected readonly eyebrow = computed(() =>
     this.mode() === 'favorites' ? 'รายการโปรด' : 'คลังพรอมต์'
-  );
-
-  protected readonly heading = computed(() =>
-    this.mode() === 'favorites'
-      ? 'พรอมต์ที่คุณชอบ เรียกใช้ได้ทันที'
-      : 'หาพรอมต์ที่ใช่สำหรับงานของคุณ'
   );
 
   protected readonly subline = computed(() =>

@@ -1,16 +1,37 @@
-<div
-  class="pointer-events-none fixed inset-x-0 top-0 -z-10 h-72 bg-gradient-to-b from-brand-50 via-lavender-100/50 to-transparent"
-  aria-hidden="true"
-></div>
+<div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+  <!-- top glow -->
+  <div
+    class="absolute -top-40 left-1/2 h-[520px] w-[900px] max-w-none -translate-x-1/2 rounded-[100%] bg-gradient-to-b from-lavender-200/80 via-brand-100/60 to-transparent blur-3xl"
+  ></div>
+  <!-- side blobs -->
+  <div class="absolute -left-40 top-[430px] size-[440px] rounded-full bg-lavender-200/60 blur-3xl"></div>
+  <div class="absolute -right-44 top-[860px] size-[420px] rounded-full bg-brand-100/50 blur-3xl"></div>
+  <!-- dotted grid that dissolves downward -->
+  <div
+    class="absolute inset-x-0 top-0 h-[560px] opacity-70"
+    style="
+      background-image: radial-gradient(rgba(124, 58, 237, 0.13) 1px, transparent 1.2px);
+      background-size: 24px 24px;
+      mask-image: linear-gradient(to bottom, black 0%, transparent 92%);
+      -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 92%);
+    "
+  ></div>
+</div>
 
 <app-site-header [view]="view()" (viewChange)="switchView($event)" />
 
 <main class="mx-auto w-full max-w-6xl px-4 sm:px-6">
-  <app-library-page [mode]="view()" (openPrompt)="openBuilder($event)" (navigate)="switchView('library')" />
+  <app-library-page
+    [mode]="view()"
+    (openPrompt)="openBuilder($event)"
+    (navigate)="switchView('library')"
+  />
 </main>
 
-<footer class="pb-10 pt-4 text-center text-xs text-neutral-400">
-  PromptBox เวอร์ชันสาธิต • พรอมต์ทั้งหมดเป็นข้อมูลตัวอย่างเพื่อการสาธิตการใช้งาน
+<footer class="pb-10 pt-6 text-center text-xs text-neutral-400">
+  <p class="mx-auto max-w-md leading-relaxed">
+    PromptBox เวอร์ชันสาธิต • พรอมต์ทั้งหมดเป็นข้อมูลตัวอย่างเพื่อการสาธิตการใช้งาน
+  </p>
 </footer>
 
 <app-prompt-builder [prompt]="builderPrompt()" (closed)="builderPrompt.set(null)" />

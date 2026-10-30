@@ -39,6 +39,7 @@ export class PromptBuilder implements OnChanges, OnDestroy {
   protected readonly closing = signal(false);
   protected readonly variantId = signal('');
   protected readonly copied = signal(false);
+  protected readonly previewPop = signal(true);
   protected readonly formValues = signal<Record<string, string>>({});
 
   protected form: FormGroup<Record<string, FormControl<string>>> = new FormGroup({});
@@ -151,6 +152,13 @@ export class PromptBuilder implements OnChanges, OnDestroy {
       this.closing.set(false);
       this.copied.set(false);
     }, 200);
+  }
+
+  protected selectVariant(id: string): void {
+    if (this.variantId() === id) return;
+    this.variantId.set(id);
+    this.previewPop.set(false);
+    requestAnimationFrame(() => this.previewPop.set(true));
   }
 
   protected readonly currentTemplate = () => {

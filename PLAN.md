@@ -31,6 +31,21 @@ npm start        # dev server สำหรับดู UI เอง
 
 ## สถานะงาน
 
+> 2026-10-30: ทำ UI redesign ระดับ premium เสร็จแล้ว (ดูรายละเอียด "UI redesign รอบ 2") — ฟังก์ชันเดิมทั้งหมดคงอยู่, test 25/25 ผ่าน, ตรวจ browser จริงทั้ง desktop/mobile/tablet
+
+### UI redesign รอบ 2 (visual polish) ✅
+
+- [x] Typography: เพิ่มฟอนต์ display Anuphan (หัวข้อไทย) + Sora (wordmark) ใน index.html, `--font-display`/`--font-brand` tokens ใน styles.css
+- [x] Background art direction: top glow, side blobs, dotted grid fade (app.html), พื้นหลัง off-white (#fbfafd)
+- [x] Header: แถบลอย pill โปร่งแสง blur เงา, logo tile gradient + highlight, active nav แบบ ink pill, เมนูมือถือเป็นแผงลอยแยก
+- [x] Hero: eyebrow pill ลอย, heading gradient text, search เป็น focal point (glow ring ตอน focus, kbd hint "กด / เพื่อค้นหา", คีย์ลัด `/` โฟกัสช่องค้นหา — กันกรณีกำลังพิมพ์ใน field)
+- [x] Category pills: active เป็น gradient purple + glow + press scale
+- [x] Cards: rounded-3xl, tile สีอิตามหมวด (violet/indigo/sky/amber/rose/emerald ใน CATEGORY_META), hover lift + glow + light source blob, footer action row, tags transition
+- [x] Empty state: rings รอบไอคอน, floating tag chips, blob, ปุ่ม gradient
+- [x] Builder: แผงมุมมน + ring, header gradient tint, grab handle มือถือ, segmented variant control (active gradient), badge "จำเป็น", preset sheet พรีวิว (token เป็น chip, missing token amber), preview pop animation ตอนสลับ variant, copy button gradient + shine sweep + checkmark stroke-draw animation
+- [x] Toast: เพิ่ม exit animation (Toast เพิ่ม flag closing ใน service, class pb-toast-out)
+- [x] Motion tokens: pb-enter (fade+blur+up), ปรับ keyframes ตามระบบเดิม, reduced-motion ครบ
+
 ### ทำเสร็จแล้ว ✅
 
 - [x] Refactor โค้ดเดิมจาก app.html monolith เป็น standalone components (commit `bb70ab8`)

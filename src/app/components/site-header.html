@@ -1,20 +1,23 @@
-<header class="sticky top-0 z-30 border-b border-neutral-200/80 bg-white/85 backdrop-blur-md">
-  <div class="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
+<header class="sticky top-0 z-30 px-3 pt-3 sm:px-6">
+  <div
+    class="mx-auto flex h-[60px] max-w-6xl items-center gap-2 rounded-2xl border border-white/60 bg-white/85 pl-3 pr-2 shadow-bar backdrop-blur-xl"
+  >
     <button
       type="button"
-      class="flex cursor-pointer items-center gap-2.5 rounded-xl py-1"
+      class="flex cursor-pointer items-center gap-2.5 rounded-xl py-1 pr-2"
       (click)="selectView('library')"
       aria-label="ไปยังหน้าคลังพรอมต์"
     >
       <span
-        class="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-md shadow-brand-600/25"
+        class="relative grid size-9 place-items-center overflow-hidden rounded-xl bg-gradient-to-br from-brand-400 to-brand-700 text-white shadow-glow"
       >
+        <span class="absolute -top-2 -right-1 size-4 rounded-full bg-white/30 blur-[3px]" aria-hidden="true"></span>
         <app-icon name="sparkle" [size]="19" />
       </span>
-      <span class="text-lg font-bold tracking-tight text-neutral-900">PromptBox</span>
+      <span class="font-brand text-[17px] font-bold tracking-tight text-neutral-900">PromptBox</span>
     </button>
 
-    <nav class="ml-3 hidden items-center gap-1 md:flex" aria-label="เมนูหลัก">
+    <nav class="ml-2 hidden items-center md:flex" aria-label="เมนูหลัก">
       <button
         type="button"
         class="nav-link"
@@ -37,9 +40,9 @@
       <button type="button" class="nav-link" (click)="myPrompts()">พรอมต์ของฉัน</button>
     </nav>
 
-    <div class="ml-auto flex items-center gap-1.5">
+    <div class="ml-auto flex items-center gap-1">
       <button type="button" class="btn-primary" (click)="createPrompt()">
-        <app-icon name="pencil" [size]="16" />
+        <app-icon name="pencil" [size]="15" />
         <span>สร้างพรอมต์</span>
       </button>
       <button
@@ -55,11 +58,14 @@
   </div>
 
   @if (menuOpen()) {
-    <nav class="border-t border-neutral-200 bg-white px-4 pb-3.5 pt-2 md:hidden" aria-label="เมนูหลักพกพา">
+    <nav
+      class="mx-auto mt-2 max-w-6xl rounded-2xl border border-neutral-200/80 bg-white/95 p-2 shadow-bar backdrop-blur-xl md:hidden"
+      aria-label="เมนูหลักพกพา"
+    >
       <button
         type="button"
         class="mobile-nav"
-        [class.nav-link-active]="view() === 'library'"
+        [class.mobile-nav-active]="view() === 'library'"
         (click)="selectView('library')"
       >
         คลังพรอมต์
@@ -67,7 +73,7 @@
       <button
         type="button"
         class="mobile-nav"
-        [class.nav-link-active]="view() === 'favorites'"
+        [class.mobile-nav-active]="view() === 'favorites'"
         (click)="selectView('favorites')"
       >
         รายการโปรด

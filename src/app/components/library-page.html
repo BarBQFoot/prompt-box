@@ -1,50 +1,71 @@
-<section class="pb-fade-up pb-14 pt-10 sm:pt-14" aria-labelledby="library-heading">
+<section class="pb-fade-up pb-14 pt-12 sm:pt-16" aria-labelledby="library-heading">
   <!-- introduction -->
-  <div class="mx-auto max-w-2xl text-center">
+  <div class="relative mx-auto max-w-2xl text-center">
     <span class="eyebrow">
-      <app-icon name="sparkle" [size]="14" />
+      <app-icon name="sparkle" [size]="13" class="text-brand-500" />
       {{ eyebrow() }}
     </span>
     <h1
       id="library-heading"
-      class="mt-4 text-3xl font-bold leading-tight tracking-tight text-neutral-900 sm:text-4xl"
+      class="font-display mt-5 text-4xl font-bold leading-[1.18] tracking-tight text-neutral-900 sm:text-5xl sm:leading-[1.14]"
     >
-      {{ heading() }}
-    </h1>
-    <p class="mt-3 text-sm leading-relaxed text-neutral-500 sm:text-base">{{ subline() }}</p>
-
-    <div class="relative mt-7">
-      <label for="prompt-search" class="sr-only">ค้นหาพรอมต์</label>
-      <app-icon
-        name="search"
-        [size]="20"
-        class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400"
-      />
-      <input
-        id="prompt-search"
-        type="search"
-        class="input-base h-12 rounded-2xl pl-11 pr-11 text-base shadow-sm"
-        placeholder="ค้นหาพรอมต์ เช่น เขียนอีเมล สรุปบทความ…"
-        [value]="search()"
-        (input)="onSearchInput($any($event.target).value)"
-      />
-      @if (search().length > 0) {
-        <button
-          type="button"
-          class="btn-icon absolute right-2 top-1/2 size-9 -translate-y-1/2"
-          aria-label="ล้างคำค้นหา"
-          (click)="onSearchInput('')"
-        >
-          <app-icon name="close" [size]="18" />
-        </button>
+      @if (mode() === 'favorites') {
+        พรอมต์ที่คุณชอบ <span class="bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent">เรียกใช้ได้ทันที</span>
+      } @else {
+        หาพรอมต์<span class="bg-gradient-to-r from-brand-600 via-brand-500 to-brand-400 bg-clip-text text-transparent">ที่ใช่</span>สำหรับงานของคุณ
       }
+    </h1>
+    <p class="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-neutral-500 sm:text-base">
+      {{ subline() }}
+    </p>
+
+    <!-- search focal point -->
+    <div class="group/search relative mt-8">
+      <div
+        class="pointer-events-none absolute -inset-1 rounded-3xl bg-gradient-to-r from-brand-400/35 via-violet-400/25 to-brand-300/35 opacity-0 blur-lg transition-opacity duration-300 group-focus-within/search:opacity-100"
+        aria-hidden="true"
+      ></div>
+      <div class="search-shell relative h-14">
+        <label for="prompt-search" class="sr-only">ค้นหาพรอมต์</label>
+        <app-icon
+          name="search"
+          [size]="20"
+          class="pointer-events-none shrink-0 text-neutral-400 transition-colors duration-200 group-focus-within/search:text-brand-500"
+        />
+        <input
+          #searchInput
+          id="prompt-search"
+          type="search"
+          class="h-full min-w-0 flex-1 bg-transparent px-3 font-normal text-[15px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+          placeholder="ค้นหาพรอมต์ เช่น เขียนอีเมล สรุปบทความ…"
+          [value]="search()"
+          (input)="onSearchInput($any($event.target).value)"
+        />
+        @if (search().length > 0) {
+          <button
+            type="button"
+            class="btn-icon size-9"
+            aria-label="ล้างคำค้นหา"
+            (click)="onSearchInput('')"
+          >
+            <app-icon name="close" [size]="18" />
+          </button>
+        } @else {
+          <span
+            class="hidden shrink-0 items-center gap-1 rounded-lg border border-neutral-200 bg-neutral-50 px-2 py-1 text-[11px] font-medium text-neutral-400 sm:flex"
+            aria-hidden="true"
+          >
+            กด <kbd class="rounded-md border border-neutral-200 bg-white px-1.5 font-sans text-[11px] shadow-xs">/</kbd> เพื่อค้นหา
+          </span>
+        }
+      </div>
     </div>
   </div>
 
   <!-- filters + sort -->
-  <div class="mt-9 flex flex-wrap items-center justify-between gap-3">
+  <div class="mt-10 flex flex-wrap items-center justify-between gap-3">
     <div
-      class="no-scrollbar -mx-1 flex min-w-0 flex-1 gap-1.5 overflow-x-auto px-1 py-1"
+      class="no-scrollbar -mx-1 flex min-w-0 flex-1 gap-2 overflow-x-auto px-1 py-1"
       role="group"
       aria-label="ตัวกรองหมวดหมู่"
     >
@@ -65,14 +86,14 @@
     </div>
 
     <div class="flex shrink-0 items-center gap-3">
-      <p class="whitespace-nowrap text-xs text-neutral-500" aria-live="polite">
+      <p class="whitespace-nowrap text-xs font-medium text-neutral-400" aria-live="polite">
         พบ {{ filteredPrompts().length }} พรอมต์
       </p>
       <div class="relative">
         <label for="prompt-sort" class="sr-only">เรียงลำดับรายการ</label>
         <select
           id="prompt-sort"
-          class="input-base w-full cursor-pointer appearance-none py-2 pl-3 pr-9 text-sm"
+          class="input-base w-full cursor-pointer appearance-none rounded-full py-2 pr-9 pl-4 text-sm font-medium shadow-xs"
           [value]="sort()"
           (change)="setSort($any($event.target).value)"
         >
@@ -90,7 +111,7 @@
   </div>
 
   <!-- prompt grid -->
-  <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+  <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
     @for (p of filteredPrompts(); track cardTick() + ':' + p.id; let i = $index) {
       <app-prompt-card
         [prompt]="p"
@@ -101,26 +122,46 @@
       />
     } @empty {
       <div
-        class="pb-card-enter col-span-full mx-auto mt-2 max-w-md rounded-2xl border border-dashed border-neutral-300 bg-white/70 px-6 py-12 text-center"
+        class="col-span-full relative mx-auto mt-4 max-w-md overflow-hidden rounded-3xl border border-dashed border-brand-200 bg-white/80 px-6 py-14 text-center shadow-xs"
       >
-        <span class="mx-auto grid size-12 place-items-center rounded-2xl bg-lavender-100 text-brand-500">
-          <app-icon name="inbox" [size]="24" />
+        <!-- decorative blobs -->
+        <span
+          class="pointer-events-none absolute -top-10 left-1/2 size-40 -translate-x-1/2 rounded-full bg-lavender-200/70 blur-2xl"
+          aria-hidden="true"
+        ></span>
+        <span
+          class="pb-float pointer-events-none absolute top-8 left-8 hidden -rotate-6 sm:block"
+          aria-hidden="true"
+        >
+          <span class="tag !border-brand-100 !bg-lavender-100 !text-brand-600">เขียนอีเมล</span>
+        </span>
+        <span
+          class="pb-float-late pointer-events-none absolute top-24 right-8 hidden rotate-3 sm:block"
+          aria-hidden="true"
+        >
+          <span class="tag !border-brand-100 !bg-lavender-100 !text-brand-600">สรุปการประชุม</span>
+        </span>
+
+        <span class="relative mx-auto grid size-16 place-items-center rounded-2xl bg-gradient-to-br from-brand-50 to-lavender-100 text-brand-500 ring-1 ring-brand-100">
+          <span class="absolute inset-0 rounded-2xl border border-brand-200/60 scale-125" aria-hidden="true"></span>
+          <span class="absolute inset-0 rounded-2xl border border-brand-200/30 scale-[1.6]" aria-hidden="true"></span>
+          <app-icon name="inbox" [size]="26" />
         </span>
         @if (favoritesEmpty()) {
-          <h3 class="mt-4 text-base font-semibold text-neutral-900">ยังไม่มีพรอมต์ในรายการโปรด</h3>
-          <p class="mt-1.5 text-sm leading-relaxed text-neutral-500">
+          <h3 class="font-display mt-5 text-lg font-bold text-neutral-900">ยังไม่มีพรอมต์ในรายการโปรด</h3>
+          <p class="mx-auto mt-1.5 max-w-xs text-sm leading-relaxed text-neutral-500">
             กดไอคอนรูปดาวบนการ์ดพรอมต์ที่ชอบ เพื่อเก็บไว้ใช้ในครั้งถัดไป
           </p>
-          <button type="button" class="btn-secondary mt-5" (click)="navigate.emit()">
+          <button type="button" class="btn-primary mt-6" (click)="navigate.emit()">
             สำรวจคลังพรอมต์
             <app-icon name="arrow-right" [size]="16" />
           </button>
         } @else {
-          <h3 class="mt-4 text-base font-semibold text-neutral-900">ไม่พบพรอมต์ที่ตรงกับเงื่อนไข</h3>
-          <p class="mt-1.5 text-sm leading-relaxed text-neutral-500">
+          <h3 class="font-display mt-5 text-lg font-bold text-neutral-900">ไม่พบพรอมต์ที่ตรงกับเงื่อนไข</h3>
+          <p class="mx-auto mt-1.5 max-w-xs text-sm leading-relaxed text-neutral-500">
             ลองเปลี่ยนคำค้นหา หรือเลือกหมวดหมู่ "ทั้งหมด" เพื่อดูพรอมต์มากขึ้น
           </p>
-          <button type="button" class="btn-secondary mt-5" (click)="clearAll()">
+          <button type="button" class="btn-primary mt-6" (click)="clearAll()">
             ล้างการค้นหาและตัวกรอง
           </button>
         }
